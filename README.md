@@ -1,73 +1,76 @@
-# React + TypeScript + Vite
+<h1 align="center">
+  E-Catalogos (Teste Front End)
+</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  Projeto desenvolvido como parte do teste técnico para a vaga de Front-End Júnior na E-Catalogos, focado na criação de um fluxo de e-commerce moderno e responsivo.
+</p>
 
-Currently, two official plugins are available:
+<p align="center">
+  <img src=".github/preview.png" alt="Preview do Projeto" width="100%" />
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🎯 Objetivo do Projeto
 
-## React Compiler
+O desafio consistiu em desenvolver uma vitrine de produtos funcional, integrando um sistema de carrinho de compras e visualização detalhada via modal, seguindo os padrões de design e requisitos técnicos da empresa.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tecnologias Utilizadas
 
-## Expanding the ESLint configuration
+- **React**: Biblioteca base para construção da interface.
+- **TypeScript**: Garantia de tipagem estática e maior segurança no desenvolvimento.
+- **Vite**: Ferramenta de build rápida para o ecossistema React.
+- **Redux**: Gerenciamento de estado global (Carrinho e Lista de Produtos).
+- **CSS-in-JS / Styled Components**: (Ajuste aqui conforme sua escolha de estilização).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ⚙️ Funcionalidades Implementadas
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Conforme solicitado nos requisitos obrigatórios:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 🛍️ Vitrine de Produtos (Slider)
+- Listagem dinâmica de produtos consumidos via JSON.
+- Implementação de **Slider/Carrossel** para navegação entre os itens.
+- Exibição de informações essenciais: Nome, Preço Original, Preço com Desconto e Identificador (Nacional/Importado).
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 🛒 Gerenciamento de Carrinho (Sidebar)
+- Adição e remoção de itens ao carrinho em tempo real.
+- Controle de quantidade (Aumentar/Diminuir) diretamente na sidebar.
+- Cálculo automático do valor total da compra.
+- Estado persistente ou reativo via Redux.
+
+### 🖼️ Modal de Detalhes
+- Abertura de modal ao clicar no botão de compra ou no produto.
+- Exibição de detalhes do produto: Imagem ampliada, variações de cores/tamanhos e descrição.
+
+### 📱 Design Responsivo
+- Interface adaptável para dispositivos móveis e desktop, seguindo a referência visual fornecida.
+
+<br>
+
+# 🛠️ Instalação e Execução
+
+### Requisitos
+- Node.js (versão 14 ou superior)
+- npm ou yarn
+
+### Passos
+1. **Clone o repositório:**
+```sh
+git clone [https://github.com/RodrigoRodrigues-Dev/teste-front-end.git](https://github.com/RodrigoRodrigues-Dev/teste-front-end.git)
+
+cd teste-front-end
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. **Instale as dependências:**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+npm install
 ```
+
+3. **Inicie a aplicação:**
+
+```sh
+npm run dev
+```
+
+### Autor
+Rodrigo Rodrigues
