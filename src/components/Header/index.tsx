@@ -1,86 +1,87 @@
-import { useState } from 'react';
 import {
-  Wrapper, TopBar, CategoryBar,
-  LeftControls, IconBtn, AppName,
-  RightControls, FuncBtn, CategoryTab,
-  Separator
+  Wrapper, CategoryBar,
+  LeftControls, IconBtn, HomeBtn,
+  CatName, ProductIndex
 } from "./styles";
 
 import { useProducts } from '../../store/reducers/useProducts';
-import { SearchModal } from '../Modals';
+import { useDispatch, useSelector } from 'react-redux';
+import { setGalleryScrollPosition } from '../../store/reducers/productSlice';
+import { nextCategory, previousCategory } from '../../store/reducers/productSlice';
+import { selectGalleryScrollPosition } from "../../store/selectors";
 
 const Header = () => {
-  const [showSearchModal, setShowSearchModal] = useState(false);
-  const { categories, selectedCategory, selectCategory, allProducts, setCurrentIndex } = useProducts();
+const { selectedCategory, filteredProducts, allProducts } = useProducts();
+  const galleryScrollPosition = useSelector(selectGalleryScrollPosition);
+  const dispatch = useDispatch();
 
-  const handleSelectProduct = (productId: number, productCategory: string) => {
-    selectCategory(productCategory);
+  const categoryOrder = ["Camiseta", "Blusa Moletom", "Calça", "Polo", "Casaco"];
 
-    const categoryProducts = allProducts.filter(p => p.categories === productCategory);
-    const productIndex = categoryProducts.findIndex(p => p.id === productId);
-
-    if (productIndex !== -1) {
-      setCurrentIndex(productIndex);
+  const getScrollPositionForCategory = (categoryName: string) => {
+    let totalBefore = 0;
+    for (const cat of categoryOrder) {
+      if (cat === categoryName) break;
+      totalBefore += allProducts.filter(p => p.categories === cat).length;
     }
+    return totalBefore * 594;
   };
 
+  const handleNextCategory = () => {
+    const currentCatIndex = categoryOrder.indexOf(selectedCategory);
+    const nextCatName = categoryOrder[currentCatIndex + 1] ?? categoryOrder[0];
+
+    dispatch(nextCategory());
+    dispatch(setGalleryScrollPosition(getScrollPositionForCategory(nextCatName)));
+  };
+
+  const handlePreviousCategory = () => {
+    const currentCatIndex = categoryOrder.indexOf(selectedCategory);
+    const prevCatName = categoryOrder[currentCatIndex - 1] ?? categoryOrder[categoryOrder.length - 1];
+
+    dispatch(previousCategory());
+    dispatch(setGalleryScrollPosition(getScrollPositionForCategory(prevCatName)));
+  };
+
+
   return (
-    <header>
-      <Wrapper>
-        <TopBar>
-          <LeftControls>
-            <IconBtn title="Voltar" disabled>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </IconBtn>
-            <AppName>Força de Vendas</AppName>
-          </LeftControls>
+    <Wrapper>
+      <LeftControls>
+        <IconBtn title="Voltar" disabled>
+          <svg stroke="currentColor" fill="#7097AA" strokeWidth="0" viewBox="0 0 24 24" cursor="pointer" height="22" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M8 7V11L2 6L8 1V5H13C17.4183 5 21 8.58172 21 13C21 17.4183 17.4183 21 13 21H4V19H13C16.3137 19 19 16.3137 19 13C19 9.68629 16.3137 7 13 7H8Z"></path></svg>
+        </IconBtn>
+      </LeftControls>
 
-          <RightControls>
-            <IconBtn
-              title="Buscar por referência"
-              onClick={() => setShowSearchModal(true)}
-            >
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <circle cx="11" cy="11" r="8" />
-                <path d="M21 21l-4.35-4.35" />
-              </svg>
-            </IconBtn>
-            <IconBtn title="Carrinho" disabled>
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <path d="M16 10a4 4 0 01-8 0" />
-              </svg>
-            </IconBtn>
-            <FuncBtn title="Funções" disabled>F</FuncBtn>
-          </RightControls>
-        </TopBar>
+      <CategoryBar>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          style={{ cursor: 'pointer' }}
+          onClick={() => dispatch(handlePreviousCategory)}
+        >
+          <path d="M14.5 6L8.5 12L14.5 18" stroke="#7097AA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <ProductIndex>{filteredProducts.length}</ProductIndex>
+        <CatName>{selectedCategory}</CatName>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          style={{ cursor: 'pointer' }}
+          onClick={() => dispatch(handleNextCategory)}
+        >
+          <path d="M9.5 6L15.5 12L9.5 18" stroke="#7097AA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </CategoryBar>
 
-        <Separator/>
-
-        <CategoryBar>
-          {categories.map((cat) => (
-            <CategoryTab
-              $active={selectedCategory === cat}
-              key={cat}
-              onClick={() => selectCategory(cat)}
-            >
-              {cat}
-            </CategoryTab>
-          ))}
-        </CategoryBar>
-      </Wrapper>
-
-      {showSearchModal && (
-        <SearchModal
-          products={allProducts}
-          onClose={() => setShowSearchModal(false)}
-          onSelect={handleSelectProduct}
-        />
-      )}
-    </header>
+      <HomeBtn>
+        <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 320 512" height="16px" width="16px" xmlns="http://www.w3.org/2000/svg"><path d="M64 32C28.7 32 0 60.7 0 96V256 448c0 17.7 14.3 32 32 32s32-14.3 32-32V288H224c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V96H288c17.7 0 32-14.3 32-32s-14.3-32-32-32H64z"></path></svg>
+      </HomeBtn>
+    </Wrapper>
   )
 }
 export default Header;
