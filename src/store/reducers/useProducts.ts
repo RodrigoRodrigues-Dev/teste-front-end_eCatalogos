@@ -1,7 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import type { AppDispatch } from '..';
 import { selectCategory, setCurrentIndex } from './productSlice';
-import { selectAllProducts, selectSelectedCategory, selectCategories, selectFilteredProducts, selectCurrentIndex } from '../selectors';
+import { selectAllProducts, selectSelectedCategory,
+  selectCategories, selectFilteredProducts, selectCurrentIndex,
+  selectProductPrice, selectCurrentProductID, selectQuantity } from '../selectors';
 
 export const useProducts = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -11,6 +13,9 @@ export const useProducts = () => {
   const categories = useSelector(selectCategories);
   const filteredProducts = useSelector(selectFilteredProducts);
   const currentIndex = useSelector(selectCurrentIndex);
+  const productPrice = useSelector(selectProductPrice);
+  const currentProductID = useSelector(selectCurrentProductID);
+  const quantity = useSelector(selectQuantity);
 
   const handleSelectCategory = (category: string | null) => {
     if (category !== null) {
@@ -28,6 +33,9 @@ export const useProducts = () => {
     selectedCategory,
     filteredProducts,
     currentIndex,
+    productPrice,
+    currentProductID,
+    quantity,
     selectCategory: handleSelectCategory,
     setCurrentIndex: handleSetCurrentIndex,
   };

@@ -4,6 +4,10 @@ import type { RootState } from './index';
 export const selectAllProducts = (state: RootState) => state.products.products;
 export const selectSelectedCategory = (state: RootState) => state.products.selectedCategory;
 export const selectCurrentIndex = (state: RootState) => state.products.currentIndex;
+export const selectProductPrice = (state: RootState) => state.products.prodcuctPrice;
+export const selectGalleryScrollPosition = (state: RootState) => state.products.galleryScrollPosition;
+export const selectCurrentProductID = (state: RootState) => state.products.currentProductID;
+export const selectQuantity = (state: RootState) => state.products.quantity;
 
 export const selectCategories = createSelector(
   [selectAllProducts],
