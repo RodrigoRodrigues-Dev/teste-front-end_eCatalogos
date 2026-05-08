@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { Product } from '../../types';
 import {
   Overlay,
@@ -6,84 +5,12 @@ import {
   ModalHeader,
   ModalTitle,
   CloseBtn,
-  SearchInput,
-  ResultList,
-  EmptyMsg,
-  ResultItem,
-  ColorDot,
-  ResultInfo,
-  ResultName,
-  ResultRef,
-  ResultPrice,
   InfoGrid,
   InfoRow,
   InfoKey,
   InfoVal,
   SkuTable,
 } from './styles';
-
-interface SearchModalProps {
-  products: Product[];
-  onClose: () => void;
-  onSelect: (productId: number, productCategory: string) => void;
-}
-
-export function SearchModal({ products, onClose, onSelect }: SearchModalProps) {
-  const [query, setQuery] = useState('');
-
-  const results = query.trim()
-    ? products.filter(
-        (p) =>
-          p.reference.toLowerCase().includes(query.toLowerCase()) ||
-          p.name.toLowerCase().includes(query.toLowerCase())
-      )
-    : [];
-
-  return (
-    <Overlay onClick={onClose}>
-      <Modal onClick={(e) => e.stopPropagation()}>
-        <ModalHeader>
-          <ModalTitle>Buscar Produto</ModalTitle>
-          <CloseBtn onClick={onClose}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </CloseBtn>
-        </ModalHeader>
-
-        <SearchInput
-          autoFocus
-          type="text"
-          placeholder="Digite a referência ou nome..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-
-        <ResultList>
-          {query.trim() && results.length === 0 && (
-            <EmptyMsg>Nenhum produto encontrado.</EmptyMsg>
-          )}
-          {results.map((p) => (
-            <ResultItem
-              key={p.id}
-              onClick={() => {
-                onSelect(p.id, p.categories);
-                onClose();
-              }}
-            >
-              <ColorDot color={p.hexCode} />
-              <ResultInfo>
-                <ResultName>{p.name}</ResultName>
-                <ResultRef>{p.reference}</ResultRef>
-              </ResultInfo>
-              <ResultPrice>R$ {p.skus[0]?.price.toFixed(2).replace('.', ',')}</ResultPrice>
-            </ResultItem>
-          ))}
-        </ResultList>
-      </Modal>
-    </Overlay>
-  );
-}
 
 // ---- InfoModal ----
 

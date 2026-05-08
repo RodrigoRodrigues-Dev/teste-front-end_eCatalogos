@@ -48,73 +48,11 @@ export const CloseBtn = styled.button`
   &:hover { background: var(--surface-2); }
 `;
 
-export const SearchInput = styled.input`
-  margin: 16px;
-  padding: 10px 14px;
-  border: 1.5px solid var(--border-strong);
-  border-radius: var(--radius);
-  font-size: 14px;
-  color: var(--text-primary);
-  background: var(--surface-2);
-  &:focus { border-color: var(--accent); }
-`;
-
-export const ResultList = styled.div`
-  overflow-y: auto;
-  flex: 1;
-  padding: 0 8px 8px;
-`;
-
 export const EmptyMsg = styled.p`
   text-align: center;
   color: var(--text-muted);
   font-size: 13px;
   padding: 24px;
-`;
-
-export const ResultItem = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 12px;
-  border-radius: var(--radius);
-  text-align: left;
-  transition: background 0.15s;
-  &:hover { background: var(--surface-2); }
-`;
-
-export const ColorDot = styled.div<{ color: string }>`
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: ${p => p.color};
-  border: 1.5px solid rgba(0,0,0,0.1);
-  flex-shrink: 0;
-`;
-
-export const ResultInfo = styled.div`
-  flex: 1;
-`;
-
-export const ResultName = styled.div`
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-primary);
-`;
-
-export const ResultRef = styled.div`
-  font-size: 11px;
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-  margin-top: 2px;
-`;
-
-export const ResultPrice = styled.div`
-  font-size: 13px;
-  font-family: var(--font-mono);
-  font-weight: 600;
-  color: var(--accent);
 `;
 
 export const InfoGrid = styled.div`
