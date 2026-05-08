@@ -2,34 +2,17 @@ import styled from 'styled-components';
 
 // Main container
 export const Wrapper = styled.div`
-  max-width: 900px;
-  margin: 16px auto;
-  padding: 16px;
-  border-radius: 8px;
+  padding: 5px 20px 0px 20px;
   background: var(--surface);
-
-  @media (max-width: 900px) {
-    margin: 16px 8px;
-  }
 `;
 
-// Product information section
-export const ProductMeta = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
+// Price display
 export const Price = styled.span`
-  font-size: 20px;
-  font-weight: 700;
-  font-family: var(--font-mono);
-  color: var(--text-primary);
-  letter-spacing: -0.03em;
-
-  @media (max-width: 800px) {
-    font-size: 16px;
-  }
+  color: rgb(112, 151, 170);
+  font-family: Roboto;
+  font-size: 2.2vh;
+  font-style: normal;
+  font-weight: 900;
 `;
 
 export const InfoBtn = styled.button`
@@ -42,6 +25,8 @@ export const InfoBtn = styled.button`
   color: var(--accent);
   background: var(--accent-light);
   transition: all 0.15s;
+  border: none;
+  cursor: pointer;
 
   &:hover {
     background: var(--accent);
@@ -49,17 +34,12 @@ export const InfoBtn = styled.button`
   }
 `;
 
-export const PriceInfoRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
 export const InfoBar = styled.div`
-  margin-bottom: 16px;
+  position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 
   @media (max-width: 800px) {
     flex-direction: column;
@@ -67,38 +47,71 @@ export const InfoBar = styled.div`
   }
 `;
 
-export const ProductName = styled.h3`
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0;
-
-  @media (max-width: 800px) {
-    font-size: 18px;
-  }
-`;
-
-export const RefRow = styled.div`
+export const HeaderControls = styled.div`
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
+`
+
+export const ProductDetailsBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`
+
+export const ProductName = styled.h3`
+    color: rgb(112, 151, 170);
+    font-family: Roboto;
+    font-size: 2.1vh;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-align: center;
 `;
 
-// Navigation controls
+export const Ref = styled.span`
+  position: absolute;
+  right: 50%;
+  transform: translateX(50%);
+
+  font-family: Roboto;
+  font-size: 2vh;
+  font-style: normal;
+  font-weight: 400;
+  color: rgb(0, 26, 30);
+`;
+
+// Product type badge
+export const TypeBadge = styled.span<{ $isNacional: boolean }>`
+  position: absolute;
+  z-index: 999;
+  right: 8%;
+  top: 10px;
+  background-color: rgba(0, 0, 0, 0.733);
+  padding: 7px;
+  border-radius: 5px;
+  color: rgb(255, 255, 255);
+`;
+
+// Navigation arrows
 export const NavArrow = styled.button<{ $side: 'left' | 'right'; disabled?: boolean }>`
   position: absolute;
+  z-index: 999;
   top: 50%;
-  ${p => p.$side === 'left' ? 'left: -25px;' : 'right: -25px;'}
-  transform: translateY(-50%);
+  ${p => p.$side === 'left' ? 'left: 18px;' : 'right: 18px;'}
+  transform: translateY(1030%);
 
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: ${p => {
     if (p.$side === 'left') return '1px solid var(--border) none 1px solid var(--border) 1px solid var(--border)';
     return 'none 1px solid var(--border) 1px solid var(--border) none';
   }};
-  background: var(--surface);
-  color: ${p => p.disabled ? 'var(--text-muted)' : 'var(--text-secondary)'};
+  background: #7097aa;
+  color: ${p => p.disabled ? 'var(--text-secondary)' : '#fff'};
   cursor: ${p => p.disabled ? 'not-allowed' : 'pointer'};
   display: flex;
   align-items: center;
@@ -118,87 +131,30 @@ export const NavArrow = styled.button<{ $side: 'left' | 'right'; disabled?: bool
   }
 `;
 
-// Badges and metadata
-export const Ref = styled.span`
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--text-muted);
-
-  @media (max-width: 800px) {
-    font-size: 11px;
-  }
-`;
-
-export const TypeBadge = styled.span<{ $isNacional: boolean }>`
-  font-size: 12px;
-  font-weight: 600;
-  padding: 2px 7px;
-  border-radius: 99px;
-  background: ${p => p.$isNacional ? 'var(--nacional-light)' : 'var(--importado-light)'};
-  color: ${p => p.$isNacional ? 'var(--nacional)' : 'var(--importado)'};
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-
-  @media (max-width: 800px) {
-    font-size: 10px;
-  }
-`;
-
-export const DeliveryBadge = styled.span`
-  font-size: 12px;
-  font-weight: 500;
-  padding: 2px 7px;
-  border-radius: 99px;
-  background: #fef3c7;
-  color: #92400e;
-  letter-spacing: 0.02em;
-
-  @media (max-width: 800px) {
-    font-size: 10px;
-  }
-`;
-
-export const RefColor = styled.div<{ color: string }>`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 25px;
-  height: 25px;
-  padding: 4px;
-  border: 2px solid var(--border);
-  border-radius: 50%;
-  background-color: ${({ color }) => color};
-`;
-
 // Image gallery section
 export const ImageArea = styled.div`
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
-  margin: 16px 0;
-  border-radius: 8px;
   background: var(--surface-2);
+  border-bottom: 3px solid rgb(112, 151, 170);
+  overflow: hidden;
 `;
 
+export const ImageGalleryScroll = styled.div`
+  position: relative;
+  display: flex;
+  transition: left 0.3s ease;
+`
+
 export const MainImage = styled.img`
-  width: 400px;
-  max-height: 550px;
+  width: 100%;
+  max-height: 733px;
   object-fit: contain;
+  padding: 0 32px;
 
   @media (max-width: 800px) {
     width: 80%;
     gap: 16px;
   }
-`;
-
-export const Counter = styled.p`
-  font-size: 12px;
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-  text-align: center;
-  margin: 12px 0 0;
 `;
 
 // Thumbnail gallery
@@ -225,8 +181,8 @@ export const ThumbButton = styled.button<{ $active: boolean }>`
 `;
 
 export const Thumb = styled.img`
-  width: 70px;
-  height: 70px;
+  width: 44px;
+  height: 44px;
   object-fit: cover;
   cursor: pointer;
 `;
