@@ -5,19 +5,18 @@ import {
 } from "./styles";
 
 import { useProducts } from '../../store/reducers/useProducts';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setGalleryScrollPosition } from '../../store/reducers/productSlice';
 import { nextCategory, previousCategory } from '../../store/reducers/productSlice';
-import { selectGalleryScrollPosition } from "../../store/selectors";
 
 const Header = () => {
-const { selectedCategory, filteredProducts, allProducts } = useProducts();
-  const galleryScrollPosition = useSelector(selectGalleryScrollPosition);
+  const { selectedCategory, filteredProducts, allProducts } = useProducts();
   const dispatch = useDispatch();
 
   const categoryOrder = ["Camiseta", "Blusa Moletom", "Calça", "Polo", "Casaco"];
 
-  const getScrollPositionForCategory = (categoryName: string) => {
+  const getScrollPositionForCategory = (categoryName: string | null) => {
+    if (!categoryName) return 0;
     let totalBefore = 0;
     for (const cat of categoryOrder) {
       if (cat === categoryName) break;
@@ -26,8 +25,9 @@ const { selectedCategory, filteredProducts, allProducts } = useProducts();
     return totalBefore * 594;
   };
 
+  const currentCatIndex = categoryOrder.indexOf(selectedCategory ?? "");
+
   const handleNextCategory = () => {
-    const currentCatIndex = categoryOrder.indexOf(selectedCategory);
     const nextCatName = categoryOrder[currentCatIndex + 1] ?? categoryOrder[0];
 
     dispatch(nextCategory());
@@ -35,13 +35,11 @@ const { selectedCategory, filteredProducts, allProducts } = useProducts();
   };
 
   const handlePreviousCategory = () => {
-    const currentCatIndex = categoryOrder.indexOf(selectedCategory);
     const prevCatName = categoryOrder[currentCatIndex - 1] ?? categoryOrder[categoryOrder.length - 1];
 
     dispatch(previousCategory());
     dispatch(setGalleryScrollPosition(getScrollPositionForCategory(prevCatName)));
   };
-
 
   return (
     <Wrapper>
@@ -59,7 +57,7 @@ const { selectedCategory, filteredProducts, allProducts } = useProducts();
           viewBox="0 0 24 24"
           fill="none"
           style={{ cursor: 'pointer' }}
-          onClick={() => dispatch(handlePreviousCategory)}
+          onClick={handlePreviousCategory}
         >
           <path d="M14.5 6L8.5 12L14.5 18" stroke="#7097AA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
@@ -72,7 +70,7 @@ const { selectedCategory, filteredProducts, allProducts } = useProducts();
           viewBox="0 0 24 24"
           fill="none"
           style={{ cursor: 'pointer' }}
-          onClick={() => dispatch(handleNextCategory)}
+          onClick={handleNextCategory}
         >
           <path d="M9.5 6L15.5 12L9.5 18" stroke="#7097AA" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
@@ -82,6 +80,7 @@ const { selectedCategory, filteredProducts, allProducts } = useProducts();
         <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 320 512" height="16px" width="16px" xmlns="http://www.w3.org/2000/svg"><path d="M64 32C28.7 32 0 60.7 0 96V256 448c0 17.7 14.3 32 32 32s32-14.3 32-32V288H224c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V96H288c17.7 0 32-14.3 32-32s-14.3-32-32-32H64z"></path></svg>
       </HomeBtn>
     </Wrapper>
-  )
-}
+  );
+};
+
 export default Header;

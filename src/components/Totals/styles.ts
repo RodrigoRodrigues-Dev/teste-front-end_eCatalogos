@@ -3,11 +3,9 @@ import styled from 'styled-components';
 export const Wrapper = styled.footer`
   display: flex;
   align-items: center;
-  position: sticky;
-  bottom: 0;
-  padding: 14px 20px;
+  justify-content: space-between;
+  padding: 4px 20px;
   border-top: 1px solid var(--border);
-  box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
   background: var(--surface);
 
   @media (max-width: 600px) {
@@ -18,8 +16,7 @@ export const Wrapper = styled.footer`
 export const TotalItem = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex: 1;
+  flex-direction: column;
   justify-content: center;
 `;
 
@@ -44,15 +41,29 @@ export const Amount = styled.span<{ $color: string; $large?: boolean }>`
   color: ${p => p.$color};
 `;
 
-export const Divider = styled.div`
-  width: 1px;
-  height: 32px;
-  background: var(--border);
-  flex-shrink: 0;
+export const QuantitySelector = styled.div`
+  width: 120px;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(239, 239, 238);
+  border-radius: 35px;
+  align-items: center;
 
-  @media (max-width: 600px) {
-    width: 100%;
-    height: 1px;
-    margin: 12px 0;
-  }
-`;
+  font-size: 22px;
+  font-weight: 700;
+`
+
+export const QuantitySelectorBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 40px;
+  border-radius: 50%;
+
+  font-size: 28px;
+  font-weight: 600;
+
+  background-color: rgb(112, 151, 170);
+  color: white;
+`

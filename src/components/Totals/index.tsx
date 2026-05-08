@@ -1,54 +1,111 @@
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectAllProducts } from '../../store/selectors';
-import type { RootState } from '../../store';
-import { Wrapper, TotalItem, Dot, Amount, Divider, Label } from './styles';
+import { useProducts } from '../../store/reducers/useProducts';
+
+import {
+  Wrapper,
+  TotalItem,
+  Amount,
+  Label,
+  QuantitySelector,
+  QuantitySelectorBtn,
+} from './styles';
+import { setQuantity } from '../../store/reducers/productSlice';
 
 export function Totals() {
   const products = useSelector(selectAllProducts);
-  const cart = useSelector((state: RootState) => state.cart);
+  const { productPrice, currentProductID } = useProducts();
+
+  const dispatch = useDispatch();
+  const currentProductId = currentProductID;
+
+  const [quantities, setQuantities] = useState<Record<number, { qty: number; price: number }>>({});
+
+  useEffect(() => {
+    dispatch(setQuantity(quantities[currentProductId]?.qty ?? 0));
+  }, [quantities, currentProductId, dispatch]);
 
   const calculateTotalByType = (type: 'NACIONAL' | 'IMPORTADO') => {
     return products.reduce((acc, product) => {
       if (product.type !== type) return acc;
 
-      const productCart = cart[product.id];
-      if (!productCart) return acc;
-
       return (
         acc +
-        Object.entries(productCart).reduce((skuAcc, [skuId, quantity]) => {
-          const sku = product.skus.find((s) => s.id === Number(skuId));
-          return skuAcc + (sku?.price ?? 0) * quantity;
+        product.skus.reduce((skuAcc, sku) => {
+          const entry = quantities[product.id];
+          if (!entry) return skuAcc;
+          return skuAcc + (sku?.price ?? 0) * entry.qty;
         }, 0)
       );
     }, 0);
   };
 
-  const nacional = calculateTotalByType('NACIONAL');
   const importado = calculateTotalByType('IMPORTADO');
-  const total = nacional + importado;
 
-  const fmt = (v: number) =>
-    v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const increaseQuantity = () => {
+    setQuantities((prev) => {
+      const current = prev[currentProductId] ?? { qty: 0, price: productPrice };
+      return {
+        ...prev,
+        [currentProductId]: {
+          qty: current.qty + 1,
+          price: productPrice,
+        },
+      };
+    });
+  };
+
+  const decreaseQuantity = () => {
+    setQuantities((prev) => {
+      const current = prev[currentProductId] ?? { qty: 0, price: productPrice };
+      return {
+        ...prev,
+        [currentProductId]: {
+          qty: Math.max(0, current.qty - 1),
+          price: current.price,
+        },
+      };
+    });
+  };
+
+  const totalPrice = Object.values(quantities).reduce((acc, { qty, price }) => {
+    return acc + price * qty * 6;
+  }, 0);
+
+  const fmt = (value: number) =>
+    value.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
 
   return (
     <Wrapper>
       <TotalItem>
-        <Dot $color="var(--nacional)" />
-        <Label>Nacional</Label>
-        <Amount $color="var(--nacional)">{fmt(nacional)}</Amount>
-      </TotalItem>
-      <Divider />
-      <TotalItem>
-        <Dot $color="var(--importado)" />
-        <Label>Importado</Label>
-        <Amount $color="var(--importado)">{fmt(importado)}</Amount>
-      </TotalItem>
-      <Divider />
-      <TotalItem>
-        <Label style={{ fontWeight: 700 }}>Total Geral</Label>
+        <p>Total Importado:</p>
         <Amount $color="var(--text-primary)" $large>
-          {fmt(total)}
+          {fmt(importado)}
+        </Amount>
+      </TotalItem>
+
+      <TotalItem>
+        <QuantitySelector>
+          <QuantitySelectorBtn onClick={decreaseQuantity}>
+            -
+          </QuantitySelectorBtn>
+
+          {quantities[currentProductId]?.qty ?? 0}
+
+          <QuantitySelectorBtn onClick={increaseQuantity}>
+            +
+          </QuantitySelectorBtn>
+        </QuantitySelector>
+      </TotalItem>
+
+      <TotalItem>
+        <Label>Total Nacional:</Label>
+        <Amount $color="var(--text-primary)" $large>
+          {fmt(totalPrice)}
         </Amount>
       </TotalItem>
     </Wrapper>
