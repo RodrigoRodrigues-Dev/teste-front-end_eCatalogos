@@ -1,3 +1,4 @@
+import Container from "../components/Container";
 import Header from "../components/Header";
 import ProductViewer from "../components/ProductViewer";
 import QuantityGrid from "../components/QuantityGrid";
@@ -10,14 +11,14 @@ const PurchasePage = () => {
   const currentProduct = filteredProducts[currentIndex];
 
   return (
-    <>
+    <Container>
       <Header />
       <main>
         <ProductViewer />
         {currentProduct && <QuantityGrid product={currentProduct} />}
       </main>
       <Totals />
-    </>
+    </Container>
   )
 }
 
